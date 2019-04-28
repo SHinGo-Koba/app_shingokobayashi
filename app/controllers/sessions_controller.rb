@@ -1,5 +1,9 @@
 class SessionsController < ApplicationController
-
+# Setting callbacks below to avoid user doing not necessary process
+  before_action :already_login, only: [:new, :create]
+  before_action :already_logout, only: [:destroy]
+  
+  
 # GET /login
   def new
     @user = User.new
@@ -11,18 +15,34 @@ class SessionsController < ApplicationController
     if @user && @user.authenticate(params[:session][:password])
       reset_session
       log_in @user
-      redirect_to root_path
       flash[:success] = "Login successfully!!"
+      redirect_to root_path
     else
-      render "new"
       flash.now[:danger] = "Invalid name/password combination"
+      render "sessions/new"
     end
   end
 
 # DELETE /logout
   def destroy
-    log_out
-    redirect_to root_path
+      log_out
+      flash[:success] = "Logout!!"
+      redirect_to root_path
   end
   
+  private
+    def already_login
+      if logged_in?
+        flash[:notice] = "Please logout first"
+        redirect_to root_path
+      end
+    end
+    
+    def already_logout
+      if !logged_in?
+        flash[:notice] = "Already logout"
+        redirect_to login_path
+      end
+    end
+    
 end

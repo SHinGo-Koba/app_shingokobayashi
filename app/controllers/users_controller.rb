@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    @user = User.find_by(id: params[:id])
   end
 
   # GET /users/new
@@ -19,7 +20,7 @@ class UsersController < ApplicationController
 
     respond_to do |f|
       if @user.save
-        f.html { redirect_to @user, notice: 'User was successfully created.' }
+        f.html { redirect_to @user, success: 'User was successfully created.' }
       else
         f.html { render :new }
       end
@@ -30,7 +31,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |f|
       if @user.update(user_params)
-        f.html { redirect_to @user, notice: 'User was successfully updated.' }
+        f.html { redirect_to @user, success: 'User was successfully updated.' }
       else
         f.html { render :edit }
       end
