@@ -29,7 +29,7 @@ class UsersController < ApplicationController
         flash[:success] = "User was successfully created"
         f.html { redirect_to @user }
       else
-        flash.now[:danger] = "Fail to be created"
+        flash.now[:danger] = "Failed to be created"
         f.html { render :new }
       end
     end
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
         flash[:success] = "User was successfully updated"
         f.html { redirect_to @user }
       else
-        flash.now[:danger] = "Fail to be updated"
+        flash.now[:danger] = "Failed to be updated"
         f.html { render :edit }
       end
     end

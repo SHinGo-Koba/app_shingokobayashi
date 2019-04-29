@@ -24,8 +24,7 @@ RSpec.describe "Users", type: :request do
             password: "test1234"
           }}
       }.not_to change{ User.count }
-      expect(response.body).to include("New User")
-      expect(response.body).to include("Fail to be created")
+      expect(response.body).to include("Failed to be created")
       expect(response.body).to include(CGI.escapeHTML("User name can't be blank"))
 
       expect{
@@ -35,8 +34,7 @@ RSpec.describe "Users", type: :request do
             password: ""
           }}
       }.not_to change{ User.count }
-      expect(response.body).to include("New User")
-      expect(response.body).to include("Fail to be created")
+      expect(response.body).to include("Failed to be created")
       expect(response.body).to include(CGI.escapeHTML("Password can't be blank"))
     end
 
@@ -105,17 +103,84 @@ RSpec.describe "Users", type: :request do
         }}
       test1 = User.find_by(user_name: "test1")
       puts test1.inspect
-      
-      # put user_path(test1),
-      #   params: { user: {
-      #     user_name: "",
-      #     password: "test14321"
-      #   }}
-      # follow_redirect!
-      # expect(response.body).to include("test1")
-      # expect(response.body).to include("User was successfully updated")
-      # puts test1.reload.inspect
     end
-
   end
+  
+  describe "PUT user_path" do
+    let!(:test1){ create(:user, user_name: "test1") }
+    let!(:test2){ create(:user, user_name: "test2") }
+    
+    it "updated successfully" do
+      # login as test1
+      post login_path,
+        params: { session: {
+          user_name: test1.user_name,
+          password: test1.password
+        }}
+      follow_redirect!
+      expect(response.body).to include("Login successfully!!")
+      puts test1.reload.inspect
+      
+      put user_path(test1),
+        params: { user: {
+          user_name: "test11",
+          password: "test14321"
+        }}
+      follow_redirect!
+      expect(response.body).to include("User was successfully updated")
+      puts test1.reload.inspect
+    end
+    
+    it "can't be updated because of invalid name or password" do
+      # login as test1
+      post login_path,
+        params: { session: {
+          user_name: test1.user_name,
+          password: test1.password
+        }}
+      follow_redirect!
+      expect(response.body).to include("Login successfully!!")
+      puts test1.reload.inspect
+
+      put user_path(test1),
+        params: { user: {
+          user_name: "",
+          password: ""
+        }}
+      expect(response.body).to include("Failed to be updated")
+      expect(response.body).to include(CGI.escapeHTML("User name can't be blank"))
+      puts test1.reload.inspect
+
+      put user_path(test1),
+        params: { user: {
+          user_name: "test3",
+          password: "tt"
+        }}
+      expect(response.body).to include("Failed to be updated")
+      expect(response.body).to include(CGI.escapeHTML("Password is too short"))
+      puts test1.reload.inspect
+    end
+    
+    it "can't be updated because of invalid user" do
+      # login as test2
+      post login_path,
+        params: { session: {
+          user_name: test2.user_name,
+          password: test2.password
+        }}
+      follow_redirect!
+      expect(response.body).to include("Login successfully!!")
+      puts test1.reload.inspect
+      
+      put user_path(test1),
+        params: { user: {
+          user_name: "test111",
+          password: ""
+        }}
+      follow_redirect!
+      expect(response.body).to include("Invalid access")
+      puts test1.reload.inspect
+    end
+  end
+
 end
