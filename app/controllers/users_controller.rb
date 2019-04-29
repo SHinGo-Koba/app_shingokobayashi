@@ -1,8 +1,12 @@
 class UsersController < ApplicationController
-
+  before_action :confirm_current_user, only: [:edit, :update]
   # GET /users/1
   def show
     @user = User.find_by(id: params[:id])
+    if !@user
+      flash[:danger] = "No user page"
+      redirect_to root_path
+    end
   end
 
   # GET /users/new
@@ -12,6 +16,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @user = current_user
   end
 
   # POST /users
@@ -20,8 +25,11 @@ class UsersController < ApplicationController
 
     respond_to do |f|
       if @user.save
-        f.html { redirect_to @user, success: 'User was successfully created.' }
+        log_in @user
+        flash[:success] = "User was successfully created"
+        f.html { redirect_to @user }
       else
+        flash.now[:danger] = "Fail to be created"
         f.html { render :new }
       end
     end
@@ -29,10 +37,13 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+    @user = current_user
     respond_to do |f|
-      if @user.update(user_params)
-        f.html { redirect_to @user, success: 'User was successfully updated.' }
+      if @user.update_attributes(user_params)
+        flash[:success] = "User was successfully updated"
+        f.html { redirect_to @user }
       else
+        flash.now[:danger] = "Fail to be updated"
         f.html { render :edit }
       end
     end

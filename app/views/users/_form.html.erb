@@ -1,27 +1,27 @@
-<%= form_with(model: user, local: true) do |form| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+<%= render "shared/error_explanation", obj: user %>
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<%= form_with(model: user, local: true) do |f| %>
+  <div class="form-group">
+    <%= f.label :user_name %>
+    <%= f.text_field :user_name, class: "form-control", value: user.try!(:user_name), placeholder: "User name", autocomplete: :off %>
+  </div>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+  </div>
+  <!--# let rails know which path you go and change form for it-->
+  <% if current_page?(signup_path) || (page_info == "users_new") %>
+    <div class="form-group">
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Password_confirmation" %>
+    </div>
+    <div class="form-group">
+      <%= f.submit "Signup", class: "btn btn-primary btn-block" %>
+    </div>
+  <% elsif current_page?(controller: "users", action: "edit") || (page_info == "users_edit") %>
+    <div class="form-group">
+      <%= f.submit "Update", class: "btn btn-primary btn-block" %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :user_name %>
-    <%= form.text_field :user_name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :password_digest %>
-    <%= form.text_field :password_digest %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  
 <% end %>

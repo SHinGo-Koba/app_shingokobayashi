@@ -1,6 +1,9 @@
-<h1>Editing User</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3">
 
-<%= render 'form', user: @user %>
+      <%= render "users/form", { user: @user, page_info: "users_edit" } %>
 
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+    </div>
+  </div>
+</div>

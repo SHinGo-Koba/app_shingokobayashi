@@ -4,9 +4,9 @@ module SessionsHelper
     @current_user ||= User.find_by(id: session[:user_id])
   end
 
-  def current_user?
+  def confirm_current_user
     user = User.find_by(id: params[:id])
-    if !(user == current_user)
+    if !(user && (user == current_user))
       redirect_to root_path
       flash[:danger] = "Invalid access"
     end
