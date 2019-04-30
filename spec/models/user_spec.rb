@@ -98,10 +98,11 @@ RSpec.describe User, type: :model do
   end
 
   it "doesn't work because of too long password" do
+    set_password = rand(10**11).to_s.rjust(11, "0")
     user = User.new(
       user_name: "test1",
-      password: "ttttttttttt",
-      password_confirmation: "ttttttttttt"
+      password: set_password,
+      password_confirmation: set_password
     )
     user.valid?
     expect(user.errors[:password]).to include("is too long (maximum is 10 characters)")

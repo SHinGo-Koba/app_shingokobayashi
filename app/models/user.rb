@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_one :organizer
+  
   validates :user_name, 
     presence: true,
     uniqueness: true,
