@@ -39,6 +39,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use bootstrap for web designing
 gem "bootstrap", "~> 4.3.1"
 
+# Use font awesome
+gem "font-awesome-sass", "~> 5.8.0"
+
 # Use this for bootstrap said by official document
 gem "jquery-rails", "~> 4.3.0"
 group :development, :test do

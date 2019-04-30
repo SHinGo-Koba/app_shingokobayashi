@@ -1,3 +1,4 @@
+<%= link_to "Projects", projects_path, class: "nav-item nav-link" %>
 <% if logged_in? %>
   <%= link_to "User setting", edit_user_path(@current_user), class: "nav-item nav-link" %>
   <%= link_to "Logout", logout_path, method: :delete, class: "nav-item nav-link" %>

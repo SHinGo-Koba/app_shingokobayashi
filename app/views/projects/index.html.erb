@@ -1,29 +1,30 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Projects</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Summary</th>
-      <th>Organizer</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @projects.each do |project| %>
-      <tr>
-        <td><%= project.title %></td>
-        <td><%= project.summary %></td>
-        <td><%= project.organizer_id %></td>
-        <td><%= link_to 'Show', project %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Project', new_project_path %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-6">
+      
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-8">
+          <h1>Projects</h1>
+        </div>
+        <div class="col-12 col-sm-4">
+          <%= link_to 'New Project', new_project_path, class: "btn btn-outline-primary btn-block" %>
+        </div>
+      </div>
+      
+      <% if @projects %>
+        <ul class="list-unstyled">
+        <% @projects.each do |project| %>
+          <li class="media">
+            <i class="fas fa-tasks fa-5x align-self-start mr-3" alt="task"></i>
+            <div class="media-body">
+              <h5 class="mt-0">project.title</h5>
+              <p>project.summary</p>
+            </div>
+          </li>
+        <% end %>
+        </ul>
+      <% end %>
+      
+    </div>
+  </div>
+</div>
