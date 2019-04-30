@@ -21,6 +21,13 @@ module SessionsHelper
     !current_user.nil?
   end
   
+  def confirm_login
+    unless logged_in?
+      redirect_to login_path
+      flash[:notice] = "Please login"
+    end
+  end
+  
   def log_out
     reset_session
     @current_user = nil

@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_action :confirm_login, only: [:new, :create]
   # GET /projects
   # GET /projects.json
   def index
@@ -18,17 +19,23 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
-
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
+    @user = current_user
+    Project.transaction do
+      unless @user.organizer
+        @organizer = @user.build_organizer(organizer_name: @user.user_name)
+        @organizer.save!
       else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        @organizer = @user
       end
+      @project = @organizer.projects.new(project_params)
+      @project.save!
     end
+      flash[:success] = "Project was successfully created"
+      redirect_to projects_path
+    rescue ActiveRecord::RecordInvalid => e
+      flash.now[:danger] = "Failed to be created"
+      render :new
+      puts "#{e.class}: #{e.message}"
   end
 
   # DELETE /projects/1
@@ -42,13 +49,8 @@ class ProjectsController < ApplicationController
   # end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_project
-      @project = Project.find(params[:id])
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:title, :summary, :string, :organizer_id)
+      params.require(:project).permit(:title, :summary)
     end
 end
