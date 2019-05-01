@@ -30,19 +30,4 @@ class SessionsController < ApplicationController
       redirect_to root_path
   end
   
-  private
-    def already_login
-      if logged_in?
-        flash[:notice] = "Please logout first"
-        redirect_to root_path
-      end
-    end
-    
-    def already_logout
-      if !logged_in?
-        flash[:notice] = "Already logout"
-        redirect_to login_path
-      end
-    end
-    
 end

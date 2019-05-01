@@ -1,24 +1,31 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8">
 
-<p>
-  <strong>Title:</strong>
-  <%= @project.title %>
-</p>
+      <div class="media bg-light mt-3">
+        <div style="font-size: 3vmin;">
+          <i class="fas fa-tasks fa-5x mr-4" alt="task"></i>
+        </div>
+        <div class="media-body">
+          <h2 class="mt-0 mr-2" style="display: inline-block;"><%= @project.title %></h2>
+          <%= link_to user_path(@project.organizer.user_id) do %>
+            <i class="fas fa-user" alt="user"><%= @project.organizer.organizer_name %></i>
+          <% end %>
+            <p class="card-text"><%= @project.summary %></p>
 
-<p>
-  <strong>Summary:</strong>
-  <%= @project.summary %>
-</p>
+          <!--#tasks-->
+          <div class="media mt-4">
+            <a class="mr-3" href="#">
+              <i class="fas fa-user" alt="user"></i>
+            </a>
+            <div class="media-body">
+              <h5 class="card-title">Summary</h5>
+            </div>
+          </div>
+          <!--#end tasks-->
+        </div>
+      </div>
 
-<p>
-  <strong>String:</strong>
-  <%= @project.string %>
-</p>
-
-<p>
-  <strong>Organizer:</strong>
-  <%= @project.organizer_id %>
-</p>
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :confirm_current_user, only: [:edit, :update]
+  before_action :already_login, only: :new
   # GET /users/1
   def show
     @user = User.find_by(id: params[:id])

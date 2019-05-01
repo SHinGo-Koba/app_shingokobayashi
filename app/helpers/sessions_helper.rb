@@ -24,13 +24,27 @@ module SessionsHelper
   def confirm_login
     unless logged_in?
       redirect_to login_path
-      flash[:notice] = "Please login"
+      flash[:warning] = "Please login"
     end
   end
   
   def log_out
     reset_session
     @current_user = nil
+  end
+
+  def already_login
+    if logged_in?
+      flash[:warning] = "Please logout first"
+      redirect_to root_path
+    end
+  end
+    
+  def already_logout
+    if !logged_in?
+      flash[:warning] = "Already logout"
+      redirect_to login_path
+    end
   end
 
 end
