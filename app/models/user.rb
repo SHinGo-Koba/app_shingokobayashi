@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_secure_password
 
   has_one :organizer
+  has_many :tasks
+  has_many :projects, through: :tasks
   
   validates :user_name, 
     presence: true,

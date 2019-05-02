@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       reset_session
       log_in @user
       flash[:success] = "Login successfully!!"
-      redirect_to root_path
+      redirect_to projects_path
     else
       flash.now[:danger] = "Invalid name/password combination"
       render "sessions/new"
