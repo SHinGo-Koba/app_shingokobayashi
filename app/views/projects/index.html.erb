@@ -8,7 +8,7 @@
         </div>
         <% if logged_in? %>
           <div class="col-12 col-sm-3">
-            <%= link_to 'New Project', new_project_path, class: "btn btn-outline-primary btn-block" %>
+            <%= link_to 'New Project', new_project_path, class: "btn btn-primary btn-block" %>
           </div>
         <% end %>
       </div>
@@ -16,7 +16,7 @@
       <% if @projects %>
         <ul class="list-unstyled">
         <% @projects.each do |project| %>
-          <%= link_to project_path(project), class: "col-12 btn btn-outline-info text-left" do %>
+          <%= link_to project_path(project), class: "col-12 btn bg-light text-primary text-left" do %>
           <li class="media">
             <i class="fas fa-tasks fa-5x align-self-start mr-3" alt="task"></i>
             <div class="media-body">
