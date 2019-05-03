@@ -1,0 +1,22 @@
+<ul class="list-unstyled">
+  <% objs.each do |obj| %>
+    <%= link_to project_path(obj.try(:project_id) || obj), class: "col-12 btn bg-light text-primary text-left" do %>
+    <li class="media">
+      <i class="fas fa-tasks fa-5x align-self-start mr-3" alt="task"></i>
+      <div class="media-body">
+        <!--# in case as organizer-->
+        <% if obj.try(:title) %>
+          <h5 class="mt-0"><%= obj.title %></h5>
+          <p class="m-0"><%= obj.summary %></p>
+          <span>since: <%= obj.created_at.strftime("%b %d, %Y") %></span>
+        <!--# in case as member  -->
+        <% elsif obj.try(:body) %>
+          <h5 class="mt-0"><%= obj.body %></h5>
+          <p class="m-0">in "<%= obj.project.title %>" project</p>
+          <span>since: <%= obj.created_at.strftime("%b %d, %Y") %></span>
+        <% end %>
+      </div>
+    </li>
+    <% end %>
+  <% end %>
+</ul>

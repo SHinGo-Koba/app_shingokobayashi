@@ -8,7 +8,8 @@ RSpec.describe "Users", type: :request do
       post users_path,
         params: { user: {
           user_name: "test1",
-          password: "test11234"
+          password: "test11234",
+          password_confirmation: "test11234"
         }}
       expect(User.count).to eq(1)
       follow_redirect!
@@ -21,7 +22,8 @@ RSpec.describe "Users", type: :request do
         post users_path,
           params: { user: {
             user_name: "",
-            password: "test1234"
+            password: "test1234",
+            password_confirmation: "test1234"
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
@@ -31,11 +33,24 @@ RSpec.describe "Users", type: :request do
         post users_path,
           params: { user: {
             user_name: "test",
-            password: ""
+            password: "",
+            password_confirmation: ""
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
       expect(response.body).to include(CGI.escapeHTML("Password can't be blank"))
+
+      expect{
+        post users_path,
+          params: { user: {
+            user_name: "test",
+            password: "test11234",
+            password_confirmation: ""
+          }}
+      }.not_to change{ User.count }
+      expect(response.body).to include("Failed to be created")
+      expect(response.body).to include(CGI.escapeHTML("Password confirmation doesn't match Password"))
+
     end
 
     it "checked if factory_bot is working" do

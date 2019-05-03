@@ -14,19 +14,9 @@
       </div>
       
       <% if @projects %>
-        <ul class="list-unstyled">
-        <% @projects.each do |project| %>
-          <%= link_to project_path(project), class: "col-12 btn bg-light text-primary text-left" do %>
-          <li class="media">
-            <i class="fas fa-tasks fa-5x align-self-start mr-3" alt="task"></i>
-            <div class="media-body">
-              <h5 class="mt-0"><%= project.title %></h5>
-              <p><%= project.summary %></p>
-            </div>
-          </li>
-          <% end %>
-        <% end %>
-        </ul>
+      
+        <%= render "shared/index_for_projects_or_tasks", objs: @projects %>
+        
       <% end %>
       
     </div>

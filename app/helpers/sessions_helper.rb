@@ -7,7 +7,7 @@ module SessionsHelper
   def confirm_current_user
     user = User.find_by(id: params[:id])
     if !(user && (user == current_user))
-      redirect_to root_path
+      redirect_to projects_path
       flash[:danger] = "Invalid access"
     end
   end
@@ -36,7 +36,7 @@ module SessionsHelper
   def already_login
     if logged_in?
       flash[:warning] = "Please logout first"
-      redirect_to root_path
+      redirect_to projects_path
     end
   end
     
@@ -46,5 +46,5 @@ module SessionsHelper
       redirect_to login_path
     end
   end
-
+  
 end

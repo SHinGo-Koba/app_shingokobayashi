@@ -14,30 +14,24 @@
             <div class="col-12 col-sm-8" style="display: inline-block;">
               <h2 class="m-0"><%= @project.title %></h2>
               <p class="mt-0 mr-0 ml-0 mb-2"><%= @project.summary %></p>
-
-              <span>created by</span>
-              <%= link_to user_path(@project.organizer.user_id) do %>
+              <span>since: <%= @project.created_at.strftime("%b %d, %Y") %></span>
+              <span class="ml-2">created by:</span>
+              <%= link_to user_path(@project.organizer.user_id), style: "text-decoration:none;" do %>
                 <i class="fas fa-user" alt="user"><%= @project.organizer.organizer_name %></i>
               <% end %>
-              <span class="ml-1">at <%= @project.created_at.strftime("%b %d, %Y") %></span>
             </div>
             <div class="col-12 col-sm-4 pt-1" style="display: inline-block;">
               <%= link_to "Join this project", new_project_task_path(@project), class: "btn btn-success btn-block" %>
             </div>
           </div>
-          <!--<div class="row mr-0 ml-0 mb-0">-->
-          <!--  <div class="col-12">-->
-
-          <!--  </div>-->
-          <!--</div>-->
           <!--# end parent right side-->
           <!--# children -->
-          <% if @tasks %>
+          <% if @tasks.present? %>
             <% @tasks.each do |task| %>
               <div class="media mt-2 ml-3">
                 <div class="media-body border-top">
                   <h4 class="mb-1"><%= task.body %></h4>
-                  <%= link_to user_path(@project.organizer.user_id) do %>
+                  <%= link_to user_path(task.user), style: "text-decoration:none;" do %>
                     <i class="fas fa-user" alt="user"><%= task.user.user_name %></i>
                   <% end %>
                   <span class="ml-1">since: <%= task.created_at.strftime("%b %d, %Y") %></span>
@@ -47,7 +41,6 @@
           <% end %>
           <!--#end children-->
         </div>
-        
       </div>
 
     </div>

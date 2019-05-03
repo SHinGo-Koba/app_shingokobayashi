@@ -2,20 +2,30 @@ class TasksController < ApplicationController
   before_action :confirm_login
   before_action :block_invalid_param_user_id, only: :create
   
+  # GET new_project_task_path(project)
   def new
-    @task = Task.new
+    @project = Project.find_by(id: params[:project_id])
+    if !@project
+      no_page_("project")
+    else
+      @task = Task.new
+    end
   end
 
+  # POST project_tasks_path(project)
   def create
-    @project = Project.find(params[:project_id])
-    @task = @project.tasks.new(task_params)
-    
-    if @task.save
-      flash[:success] = "Committed to this project!"
-      redirect_to project_path(@project)
+    @project = Project.find_by(id: params[:project_id])
+    if !@project
+      no_page_("project")
     else
-      flash.now[:danger] = "Failed to be created"
-      render :new
+      @task = @project.tasks.new(task_params)
+      if @task.save
+        flash[:success] = "Committed to this project!"
+        redirect_to project_path(@project)
+      else
+        flash.now[:danger] = "Failed to be created"
+        render :new
+      end
     end
   end
   

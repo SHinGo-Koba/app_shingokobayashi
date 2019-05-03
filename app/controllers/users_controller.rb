@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
+  before_action :confirm_login, only: [:show, :edit, :update]
   before_action :confirm_current_user, only: [:edit, :update]
   before_action :already_login, only: :new
+
   # GET /users/1
   def show
     @user = User.find_by(id: params[:id])
     if !@user
-      flash[:danger] = "No user page"
-      redirect_to root_path
+      no_page_("user") #from shared helper
+    else
+      @works_as_org = @user.organizer.try(:projects)
+      @works_as_mem = @user.tasks
     end
   end
 
@@ -23,44 +27,32 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
-    respond_to do |f|
-      if @user.save
-        log_in @user
-        flash[:success] = "User was successfully created"
-        f.html { redirect_to @user }
-      else
-        flash.now[:danger] = "Failed to be created"
-        f.html { render :new }
-      end
+    if @user.save
+      log_in @user
+      flash[:success] = "User was successfully created"
+      redirect_to @user
+    else
+      flash.now[:danger] = "Failed to be created"
+      render :new 
     end
   end
 
   # PATCH/PUT /users/1
   def update
     @user = current_user
-    respond_to do |f|
-      if @user.update_attributes(user_params)
-        flash[:success] = "User was successfully updated"
-        f.html { redirect_to @user }
-      else
-        flash.now[:danger] = "Failed to be updated"
-        f.html { render :edit }
-      end
+    if @user.update_attributes(user_params)
+      flash[:success] = "User was successfully updated"
+      redirect_to @user
+    else
+      flash.now[:danger] = "Failed to be updated"
+      render :edit
     end
   end
-
-  # DELETE /users/1
-  # def destroy
-  #   @user.destroy
-  #   respond_to do |f|
-  #     f.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-  #   end
-  # end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:user_name, :password)
+      params.require(:user).permit(:user_name, :password, :password_confirmation)
     end
+    
 end

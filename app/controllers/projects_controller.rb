@@ -1,16 +1,19 @@
 class ProjectsController < ApplicationController
-  before_action :confirm_login, only: [:new, :create]
+  before_action :confirm_login
+
   # GET /projects
-  # GET /projects.json
   def index
     @projects = Project.all.order(created_at: "DESC")
   end
 
   # GET /projects/1
-  # GET /projects/1.json
   def show
-    @project = Project.find(params[:id])
-    @tasks = @project.tasks.order(created_at: "DESC")
+    @project = Project.find_by(id: params[:id])
+    if !@project
+      no_page_("project") #from sharedhelper
+    else
+      @tasks = @project.tasks.order(created_at: "DESC")
+    end
   end
 
   # GET /projects/new
@@ -19,7 +22,6 @@ class ProjectsController < ApplicationController
   end
   
   # POST /projects
-  # POST /projects.json
   def create
     @user = current_user
     Project.transaction do
@@ -39,16 +41,6 @@ class ProjectsController < ApplicationController
       render :new
       puts "#{e.class}: #{e.message}"
   end
-
-  # DELETE /projects/1
-  # DELETE /projects/1.json
-  # def destroy
-  #   @project.destroy
-  #   respond_to do |format|
-  #     format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.

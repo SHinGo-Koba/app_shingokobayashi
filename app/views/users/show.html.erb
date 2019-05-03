@@ -1,14 +1,39 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-8">
+      <h1><%= @user.user_name %></h1>
 
-<p>
-  <strong>User name:</strong>
-  <%= @user.user_name %>
-</p>
+      <div class="row">
+        <div class="col-12">
+          
+          <h4>as Organizer</h4>
+          <% if @works_as_org.present? %>
+          
+            <%= render "shared/index_for_projects_or_tasks", objs: @works_as_org %>
+  
+          <% else %>
+            <h5>Nothing so far</h5>
+          <% end %>
+          
+        </div>
+      </div>
 
-<p>
-  <strong>Password</strong>
-  <%= @user.password %>
-</p>
+      <div class="row">
+        <div class="col-12">
+          
+          <h4>as One of members</h4>
+          <% if @works_as_mem.present? %>
+          
+            <%= render "shared/index_for_projects_or_tasks", objs: @works_as_mem %>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+          <% else %>
+            <h5>Nothing so far</h5>
+          <% end %>
+          
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

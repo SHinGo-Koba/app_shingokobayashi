@@ -4,6 +4,8 @@
 
       <%= render "shared/error_explanation", obj: @task %>
 
+      <h1>Join <%= @project.title %></h1>
+
       <%= form_with(model: @task, url: project_tasks_path(params[:project_id]), local: true) do |f| %>
         <div class="form-group">
           <%= f.label "Task" %>
