@@ -1,19 +1,21 @@
-<%= render "shared/error_explanation", obj: user %>
-
 <%= form_with(model: user, local: true) do |f| %>
+
   <div class="form-group">
     <%= f.label :user_name %>
     <%= f.text_field :user_name, class: "form-control", value: user.try!(:user_name), placeholder: "User name", autocomplete: :off %>
+    <%= render "shared/error_explanation", { obj: user, target: :user_name } %>
   </div>
   <div class="form-group">
     <%= f.label :password %>
     <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+    <%= render "shared/error_explanation", { obj: user, target: :password } %>
   </div>
   <!--# let rails know which path you go and change form for it-->
   <% if current_page?(signup_path) || (page_info == "users_new") %>
     <div class="form-group">
       <%= f.label :password_confirmation %>
-      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Password_confirmation" %>
+      <%= f.password_field :password_confirmation, class: "form-control", placeholder: "Password confirmation" %>
+      <%= render "shared/error_explanation", { obj: user, target: :password_confirmation } %>
     </div>
     <div class="form-group">
       <%= f.submit "Signup", class: "btn btn-primary btn-block" %>

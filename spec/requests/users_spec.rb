@@ -27,7 +27,7 @@ RSpec.describe "Users", type: :request do
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
-      expect(response.body).to include(CGI.escapeHTML("User name can't be blank"))
+      expect(response.body).to include(CGI.escapeHTML("it can't be blank"))
 
       expect{
         post users_path,
@@ -38,7 +38,7 @@ RSpec.describe "Users", type: :request do
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
-      expect(response.body).to include(CGI.escapeHTML("Password can't be blank"))
+      expect(response.body).to include(CGI.escapeHTML("it can't be blank"))
 
       expect{
         post users_path,
@@ -49,7 +49,7 @@ RSpec.describe "Users", type: :request do
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
-      expect(response.body).to include(CGI.escapeHTML("Password confirmation doesn't match Password"))
+      expect(response.body).to include(CGI.escapeHTML("it doesn't match Password"))
 
     end
 
@@ -163,7 +163,7 @@ RSpec.describe "Users", type: :request do
           password: ""
         }}
       expect(response.body).to include("Failed to be updated")
-      expect(response.body).to include(CGI.escapeHTML("User name can't be blank"))
+      expect(response.body).to include(CGI.escapeHTML("it can't be blank"))
       puts test1.reload.inspect
 
       put user_path(test1),
@@ -172,7 +172,7 @@ RSpec.describe "Users", type: :request do
           password: "tt"
         }}
       expect(response.body).to include("Failed to be updated")
-      expect(response.body).to include(CGI.escapeHTML("Password is too short"))
+      expect(response.body).to include(CGI.escapeHTML("it is too short"))
       puts test1.reload.inspect
     end
     
