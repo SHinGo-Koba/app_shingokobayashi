@@ -27,7 +27,18 @@ RSpec.describe "Users", type: :request do
           }}
       }.not_to change{ User.count }
       expect(response.body).to include("Failed to be created")
-      expect(response.body).to include(CGI.escapeHTML("it can't be blank nor use any white spaces"))
+      expect(response.body).to include(CGI.escapeHTML("it can't be blank"))
+
+      expect{
+        post users_path,
+          params: { user: {
+            user_name: "test    ",
+            password: "test1234",
+            password_confirmation: "test1234"
+          }}
+      }.not_to change{ User.count }
+      expect(response.body).to include("Failed to be created")
+      expect(response.body).to include(CGI.escapeHTML("it only arrows letters and numbers"))
 
       expect{
         post users_path,
@@ -163,7 +174,7 @@ RSpec.describe "Users", type: :request do
           password: ""
         }}
       expect(response.body).to include("Failed to be updated")
-      expect(response.body).to include(CGI.escapeHTML("it can't be blank nor use any white spaces"))
+      expect(response.body).to include(CGI.escapeHTML("it can't be blank"))
       puts test1.reload.inspect
 
       put user_path(test1),

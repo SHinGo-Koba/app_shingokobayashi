@@ -6,8 +6,9 @@ class User < ApplicationRecord
   has_many :projects, through: :tasks
   
   validates :user_name, 
-    presence: { message: "can't be blank nor use any white spaces" },
+    presence: true,
     uniqueness: true,
+    format: { with: /\A[a-zA-Z0-9]+\z/, message: "only arrows letters and numbers" },
     length: { maximum: 12 }
 
   validates :password,

@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
       password_confirmation: "test11234"
     )
     user.valid?
-    expect(user.errors[:user_name]).to include("can't be blank nor use any white spaces") 
+    expect(user.errors[:user_name]).to include("can't be blank") 
   end
   
   it "doesn't work because of nil in name" do
@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
       password_confirmation: "test11234"
     )
     user.valid?
-    expect(user.errors[:user_name]).to include("can't be blank nor use any white spaces")
+    expect(user.errors[:user_name]).to include("can't be blank")
   end
 
   it "doesn't work because of too long name" do
@@ -38,6 +38,16 @@ RSpec.describe User, type: :model do
     )
     user.valid?
     expect(user.errors[:user_name]).to include("is too long (maximum is 12 characters)")
+  end
+
+  it "doesn't work because of invalid name" do
+    user = User.new(
+      user_name: "test    ",
+      password: "test11234",
+      password_confirmation: "test11234"
+    )
+    user.valid?
+    expect(user.errors[:user_name]).to include("only arrows letters and numbers")
   end
 
   it "doesn't work because of already exsisted name" do
