@@ -9,8 +9,8 @@ class UsersController < ApplicationController
     if !@user
       no_page_("user") #from shared helper
     else
-      @works_as_org = @user.organizer.try(:projects)
-      @works_as_mem = @user.tasks
+      @works_as_org = @user.organizer.try(:projects).try(:order, created_at: "DESC")
+      @works_as_mem = @user.tasks.order(created_at: "DESC")
     end
   end
 

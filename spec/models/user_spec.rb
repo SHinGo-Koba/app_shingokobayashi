@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
       password_confirmation: "test11234"
     )
     user.valid?
-    expect(user.errors[:user_name]).to include("can't be blank") 
+    expect(user.errors[:user_name]).to include("can't be blank nor use any white spaces") 
   end
   
   it "doesn't work because of nil in name" do
@@ -27,7 +27,7 @@ RSpec.describe User, type: :model do
       password_confirmation: "test11234"
     )
     user.valid?
-    expect(user.errors[:user_name]).to include("can't be blank")
+    expect(user.errors[:user_name]).to include("can't be blank nor use any white spaces")
   end
 
   it "doesn't work because of too long name" do

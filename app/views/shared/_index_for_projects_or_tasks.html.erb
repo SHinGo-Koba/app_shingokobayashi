@@ -9,6 +9,10 @@
           <h5 class="mt-0"><%= obj.title %></h5>
           <p class="m-0"><%= obj.summary %></p>
           <span>since: <%= obj.created_at.strftime("%b %d, %Y") %></span>
+          <% if current_page?(projects_path) %>
+            <span class="ml-2">created by: </span>
+            <i class="fas fa-user" alt="user"><%= obj.organizer.organizer_name %></i>
+          <% end %>
         <!--# in case as member  -->
         <% elsif obj.try(:body) %>
           <h5 class="mt-0"><%= obj.body %></h5>

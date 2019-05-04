@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_many :projects, through: :tasks
   
   validates :user_name, 
-    presence: true,
+    presence: { message: "can't be blank nor use any white spaces" },
     uniqueness: true,
     length: { maximum: 12 }
 

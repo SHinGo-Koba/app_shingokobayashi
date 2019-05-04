@@ -29,9 +29,10 @@ class ProjectsController < ApplicationController
         @organizer = @user.build_organizer(organizer_name: @user.user_name)
         @organizer.save!
       else
-        @organizer = @user
+        @organizer = @user.organizer
       end
       @project = @organizer.projects.new(project_params)
+      puts @project.inspect
       @project.save!
     end
       flash[:success] = "Project was successfully created"
